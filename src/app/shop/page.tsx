@@ -2,6 +2,7 @@
 import React from 'react';
 import { FaStar } from 'react-icons/fa';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const categories = [
   { id: 1, name: 'حجابات', image: '/images/cat1.jpg' },
@@ -18,7 +19,7 @@ const products = [
     price: 3200,
     oldPrice: 4500,
     sale: 11,
-    rate: 5, // Added rate
+    rate: 5,
   },
   {
     id: 2,
@@ -26,18 +27,16 @@ const products = [
     image: '/images/product2.jpg',
     price: 5000,
     offers: '3 عروض', 
-
     sale: 20,
-    rate: 5, // Added rate
+    rate: 5,
   },
   {
     id: 3,
     name: 'Ray-Ban',
     image: '/images/product3.jpg',
     price: 4000,
-        oldPrice: 5500,
-
-    // No rate added for third product
+    oldPrice: 5500,
+    rate: 4, // Added rate to avoid undefined
   },
   {
     id: 4,
@@ -46,7 +45,7 @@ const products = [
     price: 2500,
     oldPrice: 3500,
     sale: 10,
-    rate: 5, // Added rate
+    rate: 5,
   },
 ];
 
@@ -66,17 +65,17 @@ const ShopPage: React.FC = () => {
               key={category.id}
               className="relative group overflow-hidden rounded-lg shadow-lg"
             >
-              <img
+              <Image
                 src={category.image}
                 alt={category.name}
+                width={300}
+                height={256}
                 className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                 <div className="flex flex-col gap-3">
-                  {/* Text aligned to right */}
                   <span className="font-semibold pr-1 text-lg text-white text-right">{category.name}</span>
                   
-                  {/* Button full width and centered */}
                   <button className="w-full flex items-center justify-center gap-2 bg-[#D63384] text-white px-4 py-3 rounded-lg hover:bg-[#C2185B] transition-colors font-medium">
                     اطلاع
                     <span>&larr;</span>
@@ -101,11 +100,12 @@ const ShopPage: React.FC = () => {
   href={`/product/${product.id}`}
   className="relative bg-white rounded-lg overflow-hidden flex flex-col h-full"
 >
-      {/* Rest of your product card content remains the same */}
       <div className="w-full relative overflow-hidden">
-        <img
+        <Image
           src={product.image}
           alt={product.name}
+          width={300}
+          height={280}
           className="w-full rounded-xl h-70 object-cover transition-transform duration-300 hover:scale-105"
         />
         {product.sale && (
@@ -137,7 +137,6 @@ const ShopPage: React.FC = () => {
       <span className="text-gray-400 line-through decoration-red-500">
   {product.oldPrice} د.ج
 </span>
-
     )}
     {product.offers && (
       <span className="text-gray-600 font-medium bg-gray-50 px-3 py-1 rounded-full text-sm border border-gray-200">

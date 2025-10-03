@@ -1,11 +1,12 @@
-// src/app/shop/product/[id].tsx
+// src/app/product/[id]/page.tsx
 "use client";
 import React, { useState } from "react";
 import { GoTag } from "react-icons/go";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { FaStar } from "react-icons/fa";
 import { IoMdStarOutline } from "react-icons/io";
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
+
 const productData = {
   id: 1,
   name: "حجاب عباءة",
@@ -27,14 +28,21 @@ const productData = {
 };
 
 const ProductPage: React.FC = () => {
-   const params = useParams();
+  const params = useParams();
   const productId = params.id;
+
+  // All hooks at top level - no conditions
   const [selectedImage, setSelectedImage] = useState(productData.images[0]);
   const [selectedColor, setSelectedColor] = useState(productData.colors[0]);
   const [selectedSize, setSelectedSize] = useState("M");
   const [quantity, setQuantity] = useState(1);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Conditions after hooks
+  if (!productId) {
+    return <div>المنتج غير موجود</div>;
+  }
 
   const handlePrev = () => {
     setCurrentIndex((prev) =>
@@ -65,9 +73,11 @@ const ProductPage: React.FC = () => {
       {/* Left Part: Images */}
       <div className="flex-1">
         <div className="relative rounded-lg overflow-hidden mb-4">
-          <img
+          <Image
             src={selectedImage}
             alt={productData.name}
+            width={600}
+            height={700}
             className="w-full h-175 object-cover"
           />
 
@@ -97,7 +107,13 @@ const ProductPage: React.FC = () => {
               }`}
               onClick={() => setSelectedImage(img)}
             >
-              <img src={img} alt={`صورة ${idx + 1}`} className="w-full h-full object-cover" />
+              <Image 
+                src={img} 
+                alt={`صورة ${idx + 1}`} 
+                width={88}
+                height={88}
+                className="w-full h-full object-cover" 
+              />
             </div>
           ))}
         </div>
@@ -127,7 +143,6 @@ const ProductPage: React.FC = () => {
         <div className="flex items-center gap-45">
           {productData.colors.map((color, idx) => (
             <label key={idx} className="flex items-center gap-2 cursor-pointer">
-              {/* Check Circle */}
               <input
                 type="radio"
                 name="color"
@@ -135,12 +150,10 @@ const ProductPage: React.FC = () => {
                 onChange={() => setSelectedColor(color)}
                 className="w-4 h-4 accent-[#D63384]"
               />
-              {/* Color Circle */}
               <span
                 className="w-6 h-6 rounded-full border border-gray-300"
                 style={{ backgroundColor: color.hex }}
               ></span>
-              {/* Color Name */}
               <span className="text-gray-700">{color.name}</span>
             </label>
           ))}
@@ -265,7 +278,6 @@ const ProductPage: React.FC = () => {
             </button>
           </div>
 
-
           {/* Modal */}
           {isModalOpen && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -281,7 +293,7 @@ const ProductPage: React.FC = () => {
                   <option>حجاب - قطعة 1</option>
                 </select>
 
-                {/* Colors - Same style as product page */}
+                {/* Colors */}
                 <div className="mb-4">
                   <p className="font-medium mb-2">الألوان:</p>
                   <div className="flex items-center gap-6">
@@ -304,7 +316,7 @@ const ProductPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Sizes - Same style as product page */}
+                {/* Sizes */}
                 <div className="mb-4">
                   <p className="font-medium mb-2">المقاسات:</p>
                   <div className="flex gap-3">
@@ -362,26 +374,24 @@ const ProductPage: React.FC = () => {
     </div>
      <div className="w-full h-[1px] bg-gray-100 mt-8"></div>
           <div className="flex items-center justify-between " dir="rtl">
-      {/* Text with star */}
       <div className="flex items-center gap-2 text-lg my-12 font-semibold">
         <span>اراء الزبائن</span>
       </div>
 
-      {/* Button */}
       <button className="px-4 py-2 bg-[#D63384] text-white flex items-center gap-2 rounded hover:bg-green-600 transition">
-
         اضافة راي
         <IoMdStarOutline className="text-md" />
-
       </button>
     </div>
 <div className="w-full h-[1px] bg-gray-100 mb-8"></div>
  <div className="flex flex-wrap justify-between p-6  gap-6" dir="rtl">
       {/* First Div: Logo */}
       <div className="flex-shrink-0">
-        <img
-          src="/logo.png"
+        <Image
+          src="/images/logo.png"
           alt="Logo"
+          width={96}
+          height={40}
           className="w-24 h-auto"
         />
       </div>
@@ -399,7 +409,6 @@ const ProductPage: React.FC = () => {
       </div>
     </div>
     </div>
-  
   );
 };
 
